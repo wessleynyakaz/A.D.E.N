@@ -36,7 +36,7 @@ class Main(CTk):
                 finally:
                     x = Signup(self)
                     x.pack()
-                    
+
                     
                 del Signup
 
