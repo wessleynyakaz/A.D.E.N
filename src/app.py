@@ -13,7 +13,6 @@ class Main(CTk):
         self.title('A.D.E.N')
         self.resizable(False, False)
         self.overrideredirect(True)
-        self.configure()
         self.startup()
 
     def checkUse(self):
