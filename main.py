@@ -12,6 +12,10 @@ class Main(CTk):
         self.title('A.D.E.N')
         self.resizable(False, False)
 
+    def events(self):
+        '''
+        Define event listeners
+        '''
 
 
 if __name__ == '__main__':
