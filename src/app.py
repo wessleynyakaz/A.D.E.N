@@ -19,7 +19,7 @@ class Main(CTk):
         '''
         Checks for first time use via an algorithm
         '''
-        return True
+        return False
 
     def startup(self):
         '''
@@ -30,12 +30,15 @@ class Main(CTk):
                 self.eventListner()
             case False:
                 try:
-                    from ui.signup import main
+                    from ui.signup.main import Signup
                 except:
-                    from .ui.signup import main
+                    from .ui.signup.main import Signup
                 finally:
-                    pass
-                del main
+                    x = Signup(self)
+                    x.pack()
+                    
+                    
+                del Signup
 
     def eventListner(self):
         '''
