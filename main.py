@@ -7,7 +7,7 @@ def banner():
     from tkinter import Tk, Label
     from PIL import ImageTk, Image
     banner = Tk()
-    banner.geometry("753x753")
+    banner.geometry("300x300")
     banner.overrideredirect(1)
     bg = Image.open('img\\banner\\main.png')
     bg = ImageTk.PhotoImage(bg)
