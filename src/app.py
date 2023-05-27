@@ -13,13 +13,7 @@ class Main(CTk):
         self.geometry("300x300")
         self.title('A.D.E.N')
         self.resizable(False, False)
-        self.background()
         self.startup()
-
-    def background(self):
-        bg = PhotoImage(file="main.png")
-        label1 = Label(self, image=bg)
-        label1.place(x=0, y=0)
 
     def checkUse(self):
         '''
