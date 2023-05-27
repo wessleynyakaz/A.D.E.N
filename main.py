@@ -13,9 +13,7 @@ def banner():
     bg = ImageTk.PhotoImage(bg)
     label1 = Label(banner, image=bg)
     label1.place(x=0, y=0)
-    from time import sleep
-    sleep(5)
-    banner.destroy()
+    banner.after(3000, lambda: banner.destroy())
     banner.mainloop()
 
 if __name__ == '__main__':
