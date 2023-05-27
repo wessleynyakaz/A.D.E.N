@@ -4,6 +4,7 @@ Starts, monitor the program.
 Decide to bring on the ui or go background
 '''
 from customtkinter import CTk, CTkLabel, TOP, BOTH, CTkFont
+from tkinter import PhotoImage, Label
 
 
 class Main(CTk):
@@ -12,7 +13,13 @@ class Main(CTk):
         self.geometry("300x300")
         self.title('A.D.E.N')
         self.resizable(False, False)
+        self.background()
         self.startup()
+
+    def background(self):
+        bg = PhotoImage(file="\img\\banner\main.jpg")
+        label1 = Label(self, image=bg)
+        label1.place(x=0, y=0)
 
     def checkUse(self):
         '''
