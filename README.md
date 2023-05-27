@@ -6,4 +6,4 @@
 - automate boring and tedious jobs
 - learns from the user to maximize exp
 
-<img src="img\ai_human.jpg" alt="Goal">
+<img src="img\banner\ai_human.jpg" alt="Goal">
