@@ -17,7 +17,7 @@ class Main(CTk):
         self.startup()
 
     def background(self):
-        bg = PhotoImage(file="\img\\banner\main.jpg")
+        bg = PhotoImage(file="main.jpg")
         label1 = Label(self, image=bg)
         label1.place(x=0, y=0)
 
