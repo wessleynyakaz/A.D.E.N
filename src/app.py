@@ -3,9 +3,16 @@ Defines the UI and link user, os data to instructions.
 Starts, monitor the program.
 Decide to bring on the ui or go background
 '''
-from customtkinter import CTk, CTkLabel, TOP, BOTH, CTkFont, CTkImage
-from PIL import Image, ImageTk
 
+try:
+    from ctypes import windll  # Only exists on Windows.
+    myappid = "NacFIn.A_D_E_N.ai_assist.version"
+    windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
+except ImportError:
+    pass
+finally:
+    from customtkinter import CTk, CTkLabel,  CTkFont, CTkImage
+    from PIL import Image
 
 class Main(CTk):
     def __init__(self):
@@ -13,7 +20,8 @@ class Main(CTk):
         self.geometry("302x302")
         self.title('A.D.E.N')
         self.resizable(False, False)
-        self.overrideredirect(1)
+        # self.overrideredirect(1)
+        self.iconbitmap('img/icons/icon_inverted.ico')
         # self.attributes("-alpha", 0) disappear
         bg = CTkImage(Image.open('img\\banner\\main.png'), size=(302, 302))
         bg = CTkLabel(self, image=bg, text='')
