@@ -8,11 +8,12 @@ class Signup(CTkFrame):
     '''
     Defines the signup page 
     '''
+
     def __init__(self, parent, **kwargs):
-        super().__init__(parent, **kwargs)
+        super().__init__(parent,  **kwargs)
         self.widgets()
         self.align()
-      
+        
 
     def widgets(self):
 

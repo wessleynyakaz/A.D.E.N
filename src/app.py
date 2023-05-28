@@ -3,17 +3,23 @@ Defines the UI and link user, os data to instructions.
 Starts, monitor the program.
 Decide to bring on the ui or go background
 '''
-from customtkinter import CTk, CTkLabel, TOP, BOTH, CTkFont
-from tkinter import PhotoImage, Label
+from customtkinter import CTk, CTkLabel, TOP, BOTH, CTkFont, CTkImage
+from PIL import Image, ImageTk
 
 
 class Main(CTk):
     def __init__(self):
         super().__init__()
-        self.geometry("300x300")
+        self.geometry("302x302")
         self.title('A.D.E.N')
         self.resizable(False, False)
+        self.overrideredirect(1)
+        # self.attributes("-alpha", 0) disappear
+        bg = CTkImage(Image.open('img\\banner\\main.png'), size=(302, 302))
+        bg = CTkLabel(self, image=bg, text='')
+        bg.place(x=0, y=0)
         self.startup()
+
 
     def checkUse(self):
         '''
@@ -35,7 +41,7 @@ class Main(CTk):
                     from .ui.signup.main import Signup
                 finally:
                     head = CTkFont(family='Helvatica', size=16, weight="bold")
-                    CTkLabel(self, text=" Welcome, i am A.D.E.N", font=head).pack(pady=13)
+                    CTkLabel(self, text=" Welcome, i am A.D.E.N",  font=head).pack(pady=13)
                     x = Signup(self)
                     x.pack()
 
