@@ -11,6 +11,7 @@ class Signup(CTkFrame):
 
     def __init__(self, parent, **kwargs):
         super().__init__(parent,  **kwargs)
+        self.parent = parent
         self.widgets()
         self.align()
         
@@ -54,8 +55,13 @@ class Signup(CTkFrame):
         '''
         Add code to go to the server and check for duplicates and save, return a value (OK) and enter app
         '''
+        self.parent.overrideredirect(False)
         self.submit.configure(text='Done') # Add animatory content
         self.destroy()
+
+    def credentials(self):
+        return self.name, self.lname, self.password
+
 
 if __name__ == '__main__':
     app = CTk()

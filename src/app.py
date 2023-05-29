@@ -20,14 +20,19 @@ class Main(CTk):
         self.geometry("302x302")
         self.title('A.D.E.N')
         self.resizable(False, False)
-        # self.overrideredirect(1)
+        self.overrideredirect(1)
         self.iconbitmap('img/icons/icon_inverted.ico')
         # self.attributes("-alpha", 0) disappear
         bg = CTkImage(Image.open('img\\banner\\main.png'), size=(302, 302))
         bg = CTkLabel(self, image=bg, text='')
         bg.place(x=0, y=0)
+        self.HEAD = CTkFont(family='Helvatica', size=16, weight="bold")
+        self.name = self.lname = self.password = ''
         self.startup()
 
+    def welcome(self):
+        welc = 'Welcome ' + self.name + ', i am A.D.E.N'
+        CTkLabel(self, text=welc,font=self.HEAD).pack(pady=13)
 
     def checkUse(self):
         '''
@@ -41,6 +46,7 @@ class Main(CTk):
         '''
         match self.checkUse():
             case True:
+                self.welcome()
                 self.eventListner()
             case False:
                 try:
@@ -48,13 +54,25 @@ class Main(CTk):
                 except:
                     from .ui.signup.main import Signup
                 finally:
-                    head = CTkFont(family='Helvatica', size=16, weight="bold")
-                    CTkLabel(self, text=" Welcome, i am A.D.E.N",  font=head).pack(pady=13)
+                    _ =  CTkLabel(self, text=" Welcome, i am A.D.E.N",  font=self.HEAD)
+                    _.pack(pady=13)
                     x = Signup(self)
                     x.pack()
-
-                    
+                    self.logins = x.credentials()
+                    if self.logins:
+                        _.destroy()
+                        self.welcome()
                 del Signup
+
+    def retrieveData(self):
+        from xml.etree.ElementTree import parse
+        logins = parse('data/logins.xml')
+        # Extract 
+        for item in logins.iterfind('logins'):
+            self.name = item.findtext('name')
+            self.lname = item.findtext('lname')
+            self.password = item.findtext('password')
+
 
     def eventListner(self):
         '''
