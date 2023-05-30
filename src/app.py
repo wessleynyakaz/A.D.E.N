@@ -43,7 +43,7 @@ class Main(CTk):
         for item in logins.iterfind('logins'):
             self.name = item.findtext('name')
 
-        if item:
+        if item[0] in ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z']:
             del parse
             return True
         else:
