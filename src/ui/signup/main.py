@@ -50,8 +50,21 @@ class Signup(CTkFrame):
         self.parent.overrideredirect(False)
         name,  lname, password= self.capt_fname.get(),  self.capt_lname.get(), self.capt_password.get()
         logins = name, lname, password
-        self.saveCredentials(logins)
-        self.parent.welcome(logins=logins, login='signup')
+        if self.check(name, lname, password):
+            self.saveCredentials(logins)
+            self.parent.welcome(logins=logins, login='signup')
+        else:
+            self.submit.configure(text='Please Fill In')
+    
+    def check(self, name, lname, password):
+        ALPH = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z']
+        try:
+            if name[0] in ALPH and lname in ALPH:
+                return True
+            else:
+                return False
+        except:
+            return False
 
     def saveCredentials(self, data: tuple):
         '''
