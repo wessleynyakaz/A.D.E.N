@@ -22,17 +22,16 @@ class Main(CTk):
         self.resizable(False, False)
         self.overrideredirect(1)
         self.iconbitmap('img/icons/icon_inverted.ico')
-        # self.attributes("-alpha", 0) disappear
-        bg = CTkImage(Image.open('img\\banner\\main.png'), size=(302, 302))
-        bg = CTkLabel(self, image=bg, text='')
+        
+        # Layout
+        img = CTkImage(Image.open('img\\banner\\main.png'), size=(302, 302))
+        bg = CTkLabel(self, image=img, text='')
         bg.place(x=0, y=0)
-        self.HEAD = CTkFont(family='Helvatica', size=16, weight="bold")
-        self.name = self.lname = self.password = ''
-        self.startup()
+        # self.attributes("-alpha", 0) disappear
 
-    def welcome(self):
-        welc = 'Welcome ' + self.name + ', i am A.D.E.N'
-        CTkLabel(self, text=welc,font=self.HEAD).pack(pady=13)
+        # Program starting
+        self.name = self.lname = self.password = 'non'
+        self.startup()
 
     def checkUse(self):
         '''
@@ -46,7 +45,8 @@ class Main(CTk):
         '''
         match self.checkUse():
             case True:
-                self.welcome()
+                self.retrieveLogins()
+                self.welcome(login='signin')
                 self.eventListner()
             case False:
                 try:
@@ -54,17 +54,20 @@ class Main(CTk):
                 except:
                     from .ui.signup.main import Signup
                 finally:
-                    _ =  CTkLabel(self, text=" Welcome, i am A.D.E.N",  font=self.HEAD)
-                    _.pack(pady=13)
-                    x = Signup(self)
-                    x.pack()
-                    self.logins = x.credentials()
-                    if self.logins:
-                        _.destroy()
-                        self.welcome()
-                del Signup
+                    self.signup = Signup(self)
+                    self.signup.pack(pady=43)
 
-    def retrieveData(self):
+    def welcome(self, logins=tuple(), login='signin'):
+        self.HEAD = CTkFont(family='Helvatica', size=16, weight="bold")
+        if login == 'signin':
+            welc = 'Welcome ' + self.name
+            CTkLabel(self, text=welc, font=self.HEAD).pack(pady=13)
+        else:
+            self.signup.destroy()
+            welc = 'Welcome ' + logins[0].title() + ' I am Aden'
+            CTkLabel(self, text=welc, font=self.HEAD).pack(pady=13)
+
+    def retrieveLogins(self):
         from xml.etree.ElementTree import parse
         logins = parse('data/logins.xml')
         # Extract 
@@ -72,7 +75,6 @@ class Main(CTk):
             self.name = item.findtext('name')
             self.lname = item.findtext('lname')
             self.password = item.findtext('password')
-
 
     def eventListner(self):
         '''

@@ -17,11 +17,6 @@ class Signup(CTkFrame):
         
 
     def widgets(self):
-
-        # Variables
-        self.password = StringVar()
-        self.name = StringVar()
-        self.lname = StringVar()
         
         # font
         h1 = CTkFont(family="sans", size=18)
@@ -34,9 +29,9 @@ class Signup(CTkFrame):
         CTkLabel(self, text="Password :").grid( row=3, column=1, padx=10, pady=12)
 
         # Textboxes
-        self.capt_fname = CTkEntry(self, placeholder_text="e.g Micheal", textvariable=self.name)
-        self.capt_lname = CTkEntry(self, placeholder_text="e.g Evans", textvariable=self.lname)
-        self.capt_password = CTkEntry(self,show=BULLET, textvariable=self.password)
+        self.capt_fname = CTkEntry(self, placeholder_text="e.g Micheal", )
+        self.capt_lname = CTkEntry(self, placeholder_text="e.g Evans")
+        self.capt_password = CTkEntry(self,show=BULLET)
 
         # Button
         self.submit = CTkButton(self, text="Submit",font=pcode, command=self.button_event)
@@ -56,11 +51,22 @@ class Signup(CTkFrame):
         Add code to go to the server and check for duplicates and save, return a value (OK) and enter app
         '''
         self.parent.overrideredirect(False)
-        self.submit.configure(text='Done') # Add animatory content
-        self.destroy()
+        name,  lname, password= self.capt_fname.get(),  self.capt_lname.get(), self.capt_password.get()
+        logins = name, lname, password
+        self.saveCredentials(logins)
 
-    def credentials(self):
-        return self.name, self.lname, self.password
+        #debugging
+        print('Contents :' , logins)
+        print('\nType (whole) :', type(logins))
+        x = str(logins[0])
+        print('\nType (part) :',x)
+
+        self.parent.welcome(logins=logins, login='signup')
+
+    def saveCredentials(self, logins: tuple):
+        '''
+        Code to save login data to xml
+        '''
 
 
 if __name__ == '__main__':

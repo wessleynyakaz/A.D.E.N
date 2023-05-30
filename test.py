@@ -1,4 +1,4 @@
-from xml.etree.ElementTree import parse
+from xml.etree.ElementTree import parse, _FileWrite
 logins = parse('data/logins.xml')
 name = lname = password = ''
 # Extract and output tags of interest

@@ -1,5 +1,5 @@
 /.vscode
 /Tips.md
-/src/_pycache_
-/src/ui/signup/_pycache_
-/src/ui/_pycache_
+/src/__pycache__
+/src/ui/signup/__pycache__
+/src/ui/__pycache__
