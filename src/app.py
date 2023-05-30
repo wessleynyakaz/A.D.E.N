@@ -37,7 +37,18 @@ class Main(CTk):
         '''
         Checks for first time use via an algorithm
         '''
-        return False
+        from xml.etree.ElementTree import parse
+        logins = parse('data/logins.xml')
+        # Extract 
+        for item in logins.iterfind('logins'):
+            self.name = item.findtext('name')
+
+        if item:
+            del parse
+            return True
+        else:
+            del parse
+            return False
 
     def startup(self):
         '''

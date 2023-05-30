@@ -47,25 +47,32 @@ class Signup(CTkFrame):
         self.submit.grid(row=5, column=2)
 
     def button_event(self):
-        '''
-        Add code to go to the server and check for duplicates and save, return a value (OK) and enter app
-        '''
         self.parent.overrideredirect(False)
         name,  lname, password= self.capt_fname.get(),  self.capt_lname.get(), self.capt_password.get()
         logins = name, lname, password
         self.saveCredentials(logins)
-
-        #debugging
-        print('Contents :' , logins)
-        print('\nType (whole) :', type(logins))
-        x = str(logins[0])
-        print('\nType (part) :',x)
-
         self.parent.welcome(logins=logins, login='signup')
 
-    def saveCredentials(self, logins: tuple):
+    def saveCredentials(self, data: tuple):
         '''
         Code to save login data to xml
+        '''
+        from xml.etree.ElementTree import parse
+        from xml.etree import ElementTree as e
+
+        path = 'data/logins.xml'
+        logins = parse(path)
+        root = logins.getroot()
+
+        for name in root.iter('name'): name.text = str(data[0])
+        for lname in root.iter('lname'): lname.text = str(data[1])
+        for password in root.iter('password'): password.text = str(data[2])
+
+        logins.write(path)
+
+    def saveToServer(self):
+        '''
+        Add code to go to the server and check for duplicates and save, return a value (OK) and enter app
         '''
 
 
