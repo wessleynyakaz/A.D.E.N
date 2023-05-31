@@ -5,9 +5,9 @@ except:
 finally:
     import sys
 
-# The welcome phase
-if getattr(sys, 'frozen', False):
-  import pyi_splash
+    # The welcome phase
+    if getattr(sys, 'frozen', False):
+        import pyi_splash
 
 
 

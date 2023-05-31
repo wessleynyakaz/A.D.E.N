@@ -1,5 +1,5 @@
 try:
-    from customtkinter import CTkFrame, CTkLabel, CTk, CTkEntry, CTkFont, CTkButton, StringVar
+    from customtkinter import CTkFrame, CTkLabel, CTk, CTkEntry, CTkFont, CTkButton, DISABLED
     from ..tools import BULLET
 except:
     from src.ui.tools import BULLET
@@ -10,12 +10,11 @@ class Signup(CTkFrame):
     '''
 
     def __init__(self, parent, **kwargs):
-        super().__init__(parent,  **kwargs)
+        super().__init__(parent,width=302, height=290, ** kwargs)
         self.parent = parent
         self.widgets()
         self.align()
         
-
     def widgets(self):
         
         # font
@@ -27,45 +26,103 @@ class Signup(CTkFrame):
         CTkLabel(self, text="Name :").grid(row=1, column=1, padx=6, pady=12)
         CTkLabel(self, text="Last Name :").grid(row=2, column=1, padx=10, pady=12)
         CTkLabel(self, text="Password :").grid( row=3, column=1, padx=10, pady=12)
+        self.pass_err = CTkLabel(self,text='')
 
         # Textboxes
-        self.capt_fname = CTkEntry(self, placeholder_text="e.g Micheal", )
-        self.capt_lname = CTkEntry(self, placeholder_text="e.g Evans")
-        self.capt_password = CTkEntry(self,show=BULLET)
+        self.capt_fname = CTkEntry(self, placeholder_text="e.g Micheal",validatecommand=self.validate, validate="focusout")
+        self.capt_lname = CTkEntry(self, placeholder_text="e.g Evans", validatecommand=self.validate, validate="focusout")
+        self.capt_password = CTkEntry(
+            self, show=BULLET, validatecommand=self.validate, validate="focusout")
 
         # Button
-        self.submit = CTkButton(self, text="Submit",font=pcode, command=self.button_event)
+        self.submit = CTkButton(self, text="Submit",font=pcode, command=self.button_event, state=DISABLED)
 
     def align(self):
 
+        #Labels
+        self.pass_err.grid(row=4, column=2)
         # TextBoxes
         self.capt_fname.grid(row=1, column=2)
         self.capt_lname.grid(row=2, column=2)
         self.capt_password.grid(row=3, column=2)
 
         # Button
-        self.submit.grid(row=5, column=2)
+        self.submit.grid(row=4, column=1)
 
-    def button_event(self):
-        self.parent.overrideredirect(False)
+    def button_event(self): 
+        self.submit.configure(text='Submitting...')
         name,  lname, password= self.capt_fname.get(),  self.capt_lname.get(), self.capt_password.get()
         logins = name, lname, password
-        if self.check(name, lname, password):
-            self.saveCredentials(logins)
-            self.parent.welcome(logins=logins, login='signup')
-        else:
-            self.submit.configure(text='Please Fill In')
+        self.saveCredentials(logins)
+        self.parent.overrideredirect(False)
+        self.parent.welcome(logins=logins, login='signup')
     
-    def check(self, name, lname, password):
+    def validate(self):
+        check = 0
+        name,  lname, password= self.capt_fname.get(),  self.capt_lname.get(), self.capt_password.get()
         ALPH = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z']
         try:
-            if name[0] in ALPH and lname in ALPH:
-                return True
+            if name[0].lower() in ALPH:
+                self.capt_lname.configure(fg_color=('grey'))
+                self.capt_fname.configure(text_color='green')
+                check += 1
             else:
-                return False
-        except:
-            return False
+                self.capt_fname.configure(text_color='red')
+                if check >= 1:
+                    check -= 1
+                else:
+                    check += 0
+        except IndexError:
+            self.capt_fname.configure(fg_color='red')
+            if check >= 1:
+                check -= 1
+            else:
+                check += 0
+        try:
+            if lname[0].lower() in ALPH:
+                self.capt_lname.configure(fg_color=('#424242'))
+                self.capt_lname.configure(text_color='green')
+                check += 1
+            else:
+                self.capt_lname.configure(text_color='red')
+                if check >= 1:
+                    check -= 1
+                else:
+                    check += 0
+        except IndexError:
+            self.capt_lname.configure(fg_color='red')
+            if check >= 1:
+                check -= 1
+            else:
+                check += 0
 
+        try:
+            password[0]
+        except IndexError:
+            self.pass_err.configure(text='*Required', text_color='red')
+            if check >= 1:
+                check -= 1
+            else:
+                check += 0
+
+        else:
+            try:
+                password[8]
+                check += 1
+            except IndexError:
+                self.pass_err.configure(text='weak', text_color='blue')
+                check += 1
+            else:
+                self.pass_err.configure(text='Good', text_color='green')
+                check += 1
+
+        if check == 3:
+            self.submit.configure(state='normal')
+            return True
+        else:
+            self.submit.configure(state=DISABLED)
+            return False
+        
     def saveCredentials(self, data: tuple):
         '''
         Code to save login data to xml

@@ -67,6 +67,7 @@ class Main(CTk):
                 finally:
                     self.signup = Signup(self)
                     self.signup.pack(pady=43)
+                    self.signup.pack_propagate(0)
 
     def welcome(self, logins=tuple(), login='signin'):
         self.HEAD = CTkFont(family='Helvatica', size=16, weight="bold")
