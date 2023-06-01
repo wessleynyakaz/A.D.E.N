@@ -128,7 +128,6 @@ class Signup(CTkFrame):
         Code to save login data to xml
         '''
         from xml.etree.ElementTree import parse
-        from xml.etree import ElementTree as e
 
         path = 'data/logins.xml'
         logins = parse(path)
