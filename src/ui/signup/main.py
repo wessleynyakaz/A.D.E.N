@@ -1,21 +1,22 @@
 try:
-    from customtkinter import CTkFrame, CTkLabel, CTk, CTkEntry, CTkFont, CTkButton, DISABLED
     from ..tools import BULLET
 except:
     from src.ui.tools import BULLET
+finally:
+    from customtkinter import CTkFrame, CTkLabel, CTk, CTkEntry, CTkFont, CTkButton, DISABLED
 
 class Signup(CTkFrame):
     '''
     Defines the signup page 
     '''
 
-    def __init__(self, parent, **kwargs):
-        super().__init__(parent,width=302, height=290, ** kwargs)
+    def __init__(self, parent, **kwargs) -> None:
+        super().__init__(parent, ** kwargs)
         self.parent = parent
         self.widgets()
         self.align()
         
-    def widgets(self):
+    def widgets(self) -> None:
         
         # font
         h1 = CTkFont(family="sans", size=18)
@@ -31,13 +32,12 @@ class Signup(CTkFrame):
         # Textboxes
         self.capt_fname = CTkEntry(self, placeholder_text="e.g Micheal",validatecommand=self.validate, validate="focusout")
         self.capt_lname = CTkEntry(self, placeholder_text="e.g Evans", validatecommand=self.validate, validate="focusout")
-        self.capt_password = CTkEntry(
-            self, show=BULLET, validatecommand=self.validate, validate="focusout")
+        self.capt_password = CTkEntry(self, show=BULLET, validatecommand=self.validate, validate="focusout")
 
         # Button
         self.submit = CTkButton(self, text="Submit",font=pcode, command=self.button_event, state=DISABLED)
 
-    def align(self):
+    def align(self) -> None:
 
         #Labels
         self.pass_err.grid(row=4, column=2)
@@ -57,7 +57,7 @@ class Signup(CTkFrame):
         self.parent.overrideredirect(False)
         self.parent.welcome(logins=logins, login='signup')
     
-    def validate(self):
+    def validate(self) -> bool:
         check = 0
         name,  lname, password= self.capt_fname.get(),  self.capt_lname.get(), self.capt_password.get()
         ALPH = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z']
@@ -144,10 +144,3 @@ class Signup(CTkFrame):
         '''
         Add code to go to the server and check for duplicates and save, return a value (OK) and enter app
         '''
-
-
-if __name__ == '__main__':
-    app = CTk()
-    page = Signup(parent=app)
-    page.pack()
-    app.mainloop()

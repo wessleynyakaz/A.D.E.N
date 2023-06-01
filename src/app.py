@@ -13,9 +13,10 @@ except ImportError:
 finally:
     from customtkinter import CTk, CTkLabel,  CTkFont, CTkImage
     from PIL import Image
+    REASONABLETIME = 5
 
 class Main(CTk):
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
         self.geometry("302x302")
         self.title('A.D.E.N')
@@ -32,61 +33,97 @@ class Main(CTk):
         # Program starting
         self.name = self.lname = self.password = 'non'
         self.startup()
+        self.eventListner()
 
-    def checkUse(self):
+    def checkLastUse(self):
         '''
-        Checks for first time use via an algorithm
+        Checks for the time elaplicity after first use (in days)
         '''
+        return 5
+    def checkLogin(self) -> bool:
+        '''
+        Checks for the availabilty of logins
+        '''
+        _ : str
         from xml.etree.ElementTree import parse
         logins = parse('data/logins.xml')
         # Extract 
         for item in logins.iterfind('logins'):
-            self.name = item.findtext('name')
-
-        if item[0] in ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z']:
+            _ = item.findtext('name')
+        _ = _[0]
+        try:
             del parse
-            return True
-        else:
-            del parse
+            if _.lower() in ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z']:
+                del _
+                return True
+            else:
+                del _
+                return False
+        except IndexError:
             return False
+
+    def retrieveLogins(self):
+        from xml.etree.ElementTree import parse
+        logins = parse('data/logins.xml')
+        # Extract
+        for item in logins.iterfind('logins'):
+            self.name = item.findtext('name')
+            self.lname = item.findtext('lname')
+            self.password = item.findtext('password')
 
     def startup(self):
         '''
         Starts the system
         '''
-        match self.checkUse():
-            case True:
-                self.retrieveLogins()
-                self.welcome(login='signin')
-                self.eventListner()
+        match self.checkLogin():
+            case True: # if logged in
+                if self.checkLastUse() >= REASONABLETIME:
+                    try:
+                        from ui.signin.main import Signin
+                    except:
+                        try:
+                            from .ui.signin.main import Signin
+                        except:
+                            from src.ui.signin.main import Signin
+                    finally:
+                        self.signin = Signin(self)
+                        self.signin.pack(pady=63)
+                        self.signin.pack_propagate(0)
+
+                else:
+                    self.retrieveLogins()
+                    self.welcome()
+
             case False:
                 try:
                     from ui.signup.main import Signup
                 except:
-                    from .ui.signup.main import Signup
+                    try:
+                        from .ui.signup.main import Signup
+                    except:
+                        from src.ui.signup.main import Signup
                 finally:
                     self.signup = Signup(self)
                     self.signup.pack(pady=43)
                     self.signup.pack_propagate(0)
 
-    def welcome(self, logins=tuple(), login='signin'):
+    def welcome(self, logins=tuple(), login='direct'):
         self.HEAD = CTkFont(family='Helvatica', size=16, weight="bold")
-        if login == 'signin':
-            welc = 'Welcome ' + self.name
-            CTkLabel(self, text=welc, font=self.HEAD).pack(pady=13)
-        else:
+        if login == 'signup':
             self.signup.destroy()
             welc = 'Welcome ' + logins[0].title() + ' I am Aden'
             CTkLabel(self, text=welc, font=self.HEAD).pack(pady=13)
+        else:
+            if login == 'signin':
+                self.signin.destroy()
+            welc = 'Welcome ' + self.name
+            CTkLabel(self, text=welc, font=self.HEAD).pack(pady=13)
 
-    def retrieveLogins(self):
-        from xml.etree.ElementTree import parse
-        logins = parse('data/logins.xml')
-        # Extract 
-        for item in logins.iterfind('logins'):
-            self.name = item.findtext('name')
-            self.lname = item.findtext('lname')
-            self.password = item.findtext('password')
+
+    def setTime(self):
+        '''
+        Sets the time of use
+        '''
 
     def eventListner(self):
         '''

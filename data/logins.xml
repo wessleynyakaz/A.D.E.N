@@ -1,7 +1,8 @@
 <rss version="2.0">
     <logins>
-        <name>wess</name>
-        <lname>nyakaz</lname>
-        <password>123pass</password>
+        <name>Michael</name>
+        <lname>Evans</lname>
+        <password>password</password>
+        <uname></uname>
     </logins>
 </rss>
