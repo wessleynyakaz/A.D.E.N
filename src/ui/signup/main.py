@@ -27,7 +27,7 @@ class Signup(CTkFrame):
         CTkLabel(self, text="Username :").grid(row=1, column=0, padx=10, pady=(0,10))
         CTkLabel(self, text="Name :").grid(row=2,column=0, padx=10, pady=(0,10))
         CTkLabel(self, text="Password :").grid( row=3, column=0, padx=10, pady=(0,10))
-        self.pass_err = CTkLabel(self,text='test', height=1)
+        self.pass_err = CTkLabel(self,text='', height=1)
 
         # Textboxes
         self.capt_uname = CTkEntry(self, placeholder_text="e.g Evans34")

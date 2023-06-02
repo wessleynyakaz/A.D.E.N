@@ -134,6 +134,7 @@ class Main(CTk):
             welc = 'Welcome ' + self.name
             CTkLabel(self, text=welc, font=self.HEAD, fg_color=self.TRANSPARENT, corner_radius=12).pack(pady=13)
             CTkLabel(self, text="I am Comming...Soon", font=self.HEAD, fg_color=self.TRANSPARENT, corner_radius=10).pack(pady=20)
+        self.after(10000, lambda: self.destroy())
             
     def setTime(self) -> None:
         from datetime import datetime as date
