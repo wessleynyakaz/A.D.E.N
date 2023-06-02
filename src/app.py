@@ -125,7 +125,7 @@ class Main(CTk):
             self.setTime()
             welc = 'Welcome ' + logins[1].title() + ',  I am Aden'
             CTkLabel(self, text=welc, font=self.HEAD, fg_color=self.TRANSPARENT, corner_radius=12).pack(pady=13)
-            CTkLabel(self, text="Thank you for choosing my pre-release.I am Comming...Soon", font=self.HEAD,fg_color=self.TRANSPARENT, corner_radius=4).pack(pady=20)
+            CTkLabel(self, text="Thank you for choosing my pre-release.\nI am Comming...Soon", font=self.HEAD,fg_color=self.TRANSPARENT, corner_radius=4).pack(pady=20)
             
         else:
             if login == 'signin':
