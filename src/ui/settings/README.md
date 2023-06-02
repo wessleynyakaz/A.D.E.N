@@ -1,7 +1,0 @@
-# Settings
-
-## Installation
-
-### During
-
-## After
