@@ -3,7 +3,6 @@ Defines the UI and link user, os data to instructions.
 Starts, monitor the program.
 Decide to bring on the ui or go background
 '''
-
 try:
     from ctypes import windll  # Only exists on Windows.
     myappid = "NacFIn.A_D_E_N.ai_assist.version"
@@ -21,20 +20,19 @@ class Main(CTk):
         self.geometry("302x302")
         self.title('A.D.E.N')
         self.resizable(False, False)
-        self.overrideredirect(0)
+        self.overrideredirect(True)
         self.iconbitmap('img/icons/icon_inverted.ico')
+        self.TRANSPARENT = '#001a33'
         
         # Layout
         img = CTkImage(Image.open('img\\banner\\main.png'), size=(302, 302))
         bg = CTkLabel(self, image=img, text='')
         bg.place(x=0, y=0)
-        # self.attributes("-alpha", 0) disappear
 
         # Program starting
-        self.name = self.lname = self.password = 'non'
+        self.uname = self.name = self.password = 'non'
         self.startup()
         self.eventListner()
-
 
     def checkLastUse(self):
         '''
@@ -43,27 +41,19 @@ class Main(CTk):
         # get date
         from xml.etree.ElementTree import parse
         logins = parse('data/time.xml')
-        del parse
 
-        for item in logins.iterfind('time'):
-            storedStart = item.findtext('start')
-        
-        del logins
-
+        for item in logins.iterfind('time'): storedStart = item.findtext('start')
+    
         from datetime import datetime as d
         current = d.now()
 
-        del d
         from datetime import date
-
-        # end = 0
-        # everything works till here where it jumps outof func returning a None
         end = date(current.year, current.month, current.day)
         _ = tuple(map(int, storedStart.split(', ')))
 
         start = date(_[0], _[1], _[2])
 
-        result = start - end
+        result = end - start
         time = result.days
         return time
     
@@ -77,25 +67,19 @@ class Main(CTk):
         # Extract 
         for item in logins.iterfind('logins'):
             _ = item.findtext('name')
-        _ = _[0]
         try:
-            del parse
-            if _.lower() in ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z']:
-                del _
-                return True
-            else:
-                del _
-                return False
-        except IndexError:
-            return False
+            _ = _[0]
+            if _.lower() in ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z']: return True
+            else: return False
+        except IndexError: return False
 
     def retrieveLogins(self):
         from xml.etree.ElementTree import parse
         logins = parse('data/logins.xml')
         # Extract
         for item in logins.iterfind('logins'):
+            self.uname = item.findtext('uname')
             self.name = item.findtext('name')
-            self.lname = item.findtext('lname')
             self.password = item.findtext('password')
 
     def startup(self) -> None:
@@ -132,33 +116,35 @@ class Main(CTk):
                 finally:
                     self.signup = Signup(self)
                     self.signup.pack(pady=43)
-                    self.signup.pack_propagate(0)
 
     def welcome(self, logins=tuple(), login='direct') -> None:
         self.HEAD = CTkFont(family='Helvatica', size=16, weight="bold")
+        self.BANNNER = CTkFont(family='Sans', size=15, weight='bold')
         if login == 'signup':
             self.signup.destroy()
             self.setTime()
-            welc = 'Welcome ' + logins[0].title() + ' I am Aden'
-            CTkLabel(self, text=welc, font=self.HEAD).pack(pady=13)
+            welc = 'Welcome ' + logins[1].title() + ',  I am Aden'
+            CTkLabel(self, text=welc, font=self.HEAD, fg_color=self.TRANSPARENT, corner_radius=12).pack(pady=13)
+            CTkLabel(self, text="Thank you for choosing my pre-release.I am Comming...Soon", font=self.HEAD,fg_color=self.TRANSPARENT, corner_radius=4).pack(pady=20)
             
         else:
             if login == 'signin':
                 self.signin.destroy()
                 self.setTime()
             welc = 'Welcome ' + self.name
-            CTkLabel(self, text=welc, font=self.HEAD).pack(pady=13)
-
+            CTkLabel(self, text=welc, font=self.HEAD, fg_color=self.TRANSPARENT, corner_radius=12).pack(pady=13)
+            CTkLabel(self, text="I am Comming...Soon", font=self.HEAD, fg_color=self.TRANSPARENT, corner_radius=10).pack(pady=20)
+            from time import sleep; sleep(120)
+            self.attributes("-alpha", 0)
+            del sleep 
 
     def setTime(self) -> None:
-        print("Debugging correctly, go home pal")
         from datetime import datetime as date
         current = date.now()
         start = str(current.year) + ', ' + str(current.month) + ', ' + str(current.day)
         
         # Write data
         from xml.etree.ElementTree import parse
-
         path = 'data/time.xml'
         logins = parse(path)
         root = logins.getroot()
@@ -166,7 +152,6 @@ class Main(CTk):
         for name in root.iter('start'): name.text = start
         logins.write(path)
         del parse, logins, root, path, start
-
 
     def eventListner(self):
         '''
@@ -177,4 +162,3 @@ class Main(CTk):
         '''
         Displays output
         '''
-

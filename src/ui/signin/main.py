@@ -23,9 +23,9 @@ class Signin(CTkFrame):
         pcode = CTkFont(family="Helvatica", size=17)
         
         # Labels
-        CTkLabel(self, text="\tLogin", font=h1, anchor='center').grid(row=0, column=1, pady=3)
-        CTkLabel(self, text="Username :").grid(row=1, column=1, padx=6, pady=12)
-        CTkLabel(self, text="Password :").grid( row=2, column=1, padx=10, pady=12)
+        CTkLabel(self, text="\tLogin", font=h1).grid(row=0, column=0, pady=(0, 20))
+        CTkLabel(self, text="Username :").grid(row=1, column=0, padx=10, pady=(0,10))
+        CTkLabel(self, text="Password :").grid( row=2, column=0, padx=10, pady=(0,10))
 
         # Textboxes
         self.capt_uname = CTkEntry(self, validatecommand=self.realtimeValidate, validate="focusout")
@@ -37,11 +37,11 @@ class Signin(CTkFrame):
     def align(self) -> None:
 
         # TextBoxes
-        self.capt_uname.grid(row=1, column=2)
-        self.capt_password.grid(row=2, column=2)
+        self.capt_uname.grid(row=1, column=1, padx=10, pady=(0, 10))
+        self.capt_password.grid(row=2, column=1, padx=10, pady=(0, 10))
 
         # Button
-        self.submit.grid(row=3, column=2)
+        self.submit.grid(row=3, column=1, pady=(0, 20))
 
     def button_event(self) -> None:
         self.submit.configure(text='Logging in...')
@@ -69,9 +69,10 @@ class Signin(CTkFrame):
             self.submit.configure(state='normal')
         else:
             self.submit.configure(state=DISABLED)
+
     def finalValidate(self, uname, password) -> bool:
         self.parent.retrieveLogins()
-        if  (uname == self.parent.name) and (password == self.parent.password):
+        if  (uname == self.parent.uname) and (password == self.parent.password):
             return True
         else:
             return False
