@@ -2,10 +2,11 @@
 
 ## An artificialy intelligent system
 
-- recieve tasks and complete them
-- automate boring and tedious jobs
+- recieve tasks and complete them (searching)
+- automate boring and tedious jobs ( sortinf files), with just one command "sort docs in ascening order"
 - learns from the user to maximize exp
-
+- controls the screen (autonomous mode)
+- 
 <img src="img\banner\ai_human.jpg" alt="Goal">
 
 **Liked it , leave a star**
