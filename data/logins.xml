@@ -1,7 +1,5 @@
-<rss version="2.0">
-    <logins>
-        <uname></uname>
-        <name></name>
-        <password></password>
-    </logins>
-</rss>
+<logins>
+    <uname>Wesley12</uname>
+    <name>wessy</name>
+    <password>12345</password>
+</logins>

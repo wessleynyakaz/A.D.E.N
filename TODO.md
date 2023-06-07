@@ -1,4 +1,5 @@
 # Things which need some touching `(many)`
 
-1) Coming soon Banner
-2) compiler UI
+1) A result UI
+2) Add a parrallel computation
+3) audio output

@@ -1,17 +1,13 @@
 try:
-    from ..tools import BULLET
+    from .tools import BULLET
 except:
     from src.ui.tools import BULLET
 finally:
-    from customtkinter import CTkFrame, CTkLabel, CTk, CTkEntry, CTkFont, CTkButton, DISABLED
+    from customtkinter import CTkFrame, CTkLabel, CTkEntry, CTkFont, CTkButton, DISABLED
 
 class Signup(CTkFrame):
-    '''
-    Defines the signup page 
-    '''
-
-    def __init__(self, parent, **kwargs) -> None:
-        super().__init__(parent, ** kwargs)
+    def __init__(self, parent, fg_color='transparent', ** kwargs) -> None:
+        super().__init__(parent, fg_color=fg_color, ** kwargs)
         self.parent = parent
         self.widgets()
         self.align()
@@ -23,7 +19,7 @@ class Signup(CTkFrame):
         pcode = CTkFont(family="Helvatica", size=17)
         
         # Labels
-        CTkLabel(self, text="\tSignup", font=h1, anchor='center').grid(row=0, column=0, pady=(0, 20))
+        CTkLabel(self, text="Signup", font=h1, anchor='center').grid(row=0, column=0, padx=10, pady=(0, 20))
         CTkLabel(self, text="Username :").grid(row=1, column=0, padx=10, pady=(0,10))
         CTkLabel(self, text="Name :").grid(row=2,column=0, padx=10, pady=(0,10))
         CTkLabel(self, text="Password :").grid( row=3, column=0, padx=10, pady=(0,10))
@@ -35,8 +31,8 @@ class Signup(CTkFrame):
         self.capt_password = CTkEntry(self, show=BULLET, validatecommand=self.validate, validate="focusout")
 
         # Button
-        self.submit = CTkButton(self, text="Submit",font=pcode, command=self.button_event, state=DISABLED, height=16)
-
+        self.submit_btn = CTkButton(self, text="Submit",font=pcode, command=self.button_event, state=DISABLED, height=16)
+        self.exit_btn = CTkButton(self, text='EXIT', command=lambda: self.parent.destroy())
     def align(self) -> None:
 
         #Labels
@@ -47,15 +43,17 @@ class Signup(CTkFrame):
         self.capt_password.grid(row=3,  column=1, padx=10, pady=(0,10))
 
         # Button
-        self.submit.grid(row=5, column=1)
+        self.submit_btn.grid(row=5, column=1)
+        self.exit_btn.grid(row=5,column=0)
 
     def button_event(self): 
-        self.submit.configure(text='Submitting...')
+        self.submit_btn.configure(text='Submitting..')
         uname,  name, password= self.capt_uname.get(),  self.capt_name.get(), self.capt_password.get()
         logins = uname, name, password
         self.saveCredentials(logins)
-        self.parent.overrideredirect(False)
-        self.parent.welcome(logins=logins, login='signup')
+        try: from .form import Form
+        except ModuleNotFoundError: from src.ui.form import Form
+        Form(parent=self.parent, caller=self)
     
     def validate(self) -> bool:
         check = 0
@@ -100,10 +98,10 @@ class Signup(CTkFrame):
                 check += 1
 
         if check == 2:
-            self.submit.configure(state='normal')
+            self.submit_btn.configure(state='normal')
             return True
         else:
-            self.submit.configure(state=DISABLED)
+            self.submit_btn.configure(state=DISABLED)
             return False
         
     def saveCredentials(self, data: tuple):

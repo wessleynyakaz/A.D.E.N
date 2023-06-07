@@ -1,5 +1,5 @@
-try: from src.app import Main
-except: from .src.app import Main
+try: from src.engine import Main
+except: from .src.engine import Main
 finally:
     import sys
     if __name__ == '__main__':
