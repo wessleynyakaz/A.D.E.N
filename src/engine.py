@@ -135,7 +135,22 @@ class Main(CTk):
         And disappears the window
         '''  
         self.disappear()
-    
+        try:
+            from ui.audio import speak
+        except:
+            try:
+                from .ui.audio import speak
+            except:
+                from src.ui.audio import speak
+        finally:
+            match login:
+                case 'direct':
+                    speak(f'How are you {self.name}?')
+                case 'signin':
+                    speak(f'How have you been {self.name}?')
+                case 'signup':
+                    speak(f'Welcome {self.name}, i am Aden.')
+        del speak
     def event_listener(self):
         '''
         Listens for commands from user
