@@ -1,4 +1,13 @@
 <rss version="2.0">
-    
+    <name>
+        <first></first>
+        <second></second>
+        <third></third>
+        <last></last>
+    </name>
+    <shortcomings>
+        <hearing></hearing>
+        <visual></visual>
+    </shortcomings>
     <D.O.B></D.O.B>
 </rss>

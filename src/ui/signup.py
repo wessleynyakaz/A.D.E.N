@@ -1,9 +1,6 @@
-try:
-    from .tools import BULLET
-except:
-    from src.ui.tools import BULLET
-finally:
-    from customtkinter import CTkFrame, CTkLabel, CTkEntry, CTkFont, CTkButton, DISABLED
+from src.ui.tools import BULLET
+from customtkinter import CTkFrame, CTkLabel, CTkEntry, CTkFont, CTkButton, DISABLED
+from src.ui.form import Form
 
 class Signup(CTkFrame):
     def __init__(self, parent, fg_color='transparent', ** kwargs) -> None:
@@ -12,28 +9,41 @@ class Signup(CTkFrame):
         self.widgets()
         self.align()
         
+    def form(self):
+        self.logins_page.destroy()
+        self.parent.geometry("302x302")
+        self.parent.overrideredirect(False)
+        Form(self).grid(row=0, column=0, sticky='nswe')
+
     def widgets(self) -> None:
         
+        # Frames
+        self.logins_page = CTkFrame(self)
+        self.form_page = CTkFrame(self)
         # font
         h1 = CTkFont(family="sans", size=18)
         pcode = CTkFont(family="Helvatica", size=17)
         
         # Labels
-        CTkLabel(self, text="Signup", font=h1, anchor='center').grid(row=0, column=0, padx=10, pady=(0, 20))
-        CTkLabel(self, text="Username :").grid(row=1, column=0, padx=10, pady=(0,10))
-        CTkLabel(self, text="Name :").grid(row=2,column=0, padx=10, pady=(0,10))
-        CTkLabel(self, text="Password :").grid( row=3, column=0, padx=10, pady=(0,10))
-        self.pass_err = CTkLabel(self,text='', height=1)
+        CTkLabel(self.logins_page, text="Signup", font=h1, anchor='center').grid(row=0, column=0, padx=10, pady=(0, 20))
+        CTkLabel(self.logins_page, text="Username :").grid(row=1, column=0, padx=10, pady=(0,10))
+        CTkLabel(self.logins_page, text="Name :").grid(row=2,column=0, padx=10, pady=(0,10))
+        CTkLabel(self.logins_page, text="Password :").grid( row=3, column=0, padx=10, pady=(0,10))
+        self.pass_err = CTkLabel(self.logins_page, text='', height=1)
 
         # Textboxes
-        self.capt_uname = CTkEntry(self, placeholder_text="e.g Evans34")
-        self.capt_name = CTkEntry(self, placeholder_text="e.g Evans", validatecommand=self.validate, validate="focusout")
-        self.capt_password = CTkEntry(self, show=BULLET, validatecommand=self.validate, validate="focusout")
+        self.capt_uname = CTkEntry(self.logins_page, placeholder_text="e.g Evans34")
+        self.capt_name = CTkEntry(self.logins_page, placeholder_text="e.g Evans", validatecommand=self.validate, validate="focusout")
+        self.capt_password = CTkEntry(self.logins_page, show=BULLET, validatecommand=self.validate, validate="focusout")
 
         # Button
-        self.submit_btn = CTkButton(self, text="Submit",font=pcode, command=self.button_event, state=DISABLED, height=16)
-        self.exit_btn = CTkButton(self, text='EXIT', command=lambda: self.parent.destroy())
+        self.submit_btn = CTkButton(self.logins_page, text="Submit",font=pcode, command=self.button_event, state=DISABLED, height=16)
+        self.exit_btn = CTkButton(self.logins_page, text='EXIT', command=lambda: self.parent.destroy())
+    
     def align(self) -> None:
+        
+        # Frame
+        self.logins_page.grid()
 
         #Labels
         self.pass_err.grid(row=4,  column=1, padx=10)
@@ -49,11 +59,11 @@ class Signup(CTkFrame):
     def button_event(self): 
         self.submit_btn.configure(text='Submitting..')
         uname,  name, password= self.capt_uname.get(),  self.capt_name.get(), self.capt_password.get()
+        self.form = Form(self)
         logins = uname, name, password
         self.saveCredentials(logins)
-        try: from .form import Form
-        except ModuleNotFoundError: from src.ui.form import Form
-        Form(parent=self.parent, caller=self)
+        self.parent.welcome()
+        # self.form()
     
     def validate(self) -> bool:
         check = 0

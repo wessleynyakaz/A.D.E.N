@@ -13,4 +13,3 @@ def speak(words: str):
     aden.setProperty('voice', voices[FEMALE].id)
     aden.say(words)
     aden.runAndWait()
-    

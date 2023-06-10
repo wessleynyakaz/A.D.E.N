@@ -56,15 +56,17 @@ class Main(CTk):
         '''
         Checks for the availabilty of logins
         '''
-        _ : str
+        alpha =  {'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'}
         from xml.etree.ElementTree import parse
         logins = parse('data/logins.xml')
         # Extract 
         for item in logins.iterfind('logins'):
-            _ = item.findtext('name')
+            name = item.findtext('name')
+            uname = item.findtext('uname')
         try:
-            _ = _[0]
-            if _.lower() in ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z']: return True
+            name = name[0]
+            if name.lower() in alpha: 
+                return (True if uname else False)
             else: return False
         except IndexError: return False
 
@@ -103,10 +105,8 @@ class Main(CTk):
         match self.check_login(): # validation protocol
             case True: # if logged in
                 if self.check_last_use() > REASONABLETIME:
-                    try: from ui.signin import Signin
-                    except:
-                        try: from .ui.signin import Signin
-                        except: from src.ui.signin import Signin
+                    try: from .ui.signin import Signin
+                    except: from src.ui.signin import Signin
                     finally:
                         self.signin = Signin(self)
                         self.signin.pack(pady=63)
@@ -117,16 +117,14 @@ class Main(CTk):
                     self.welcome('direct')
 
             case False:
-                try:
-                    from ui.signup import Signup
-                except:
-                    try:
-                        from .ui.signup import Signup
-                    except:
-                        from src.ui.signup import Signup
+                try: from .ui.signup import Signup
+                except: from src.ui.signup import Signup
                 finally:
                     self.signup = Signup(self)
                     self.signup.pack(pady=43)
+
+        # try: from .ui.home import Home
+        # except: from src.ui.home import Home
 
     def welcome(self, login) -> None:
         '''
@@ -145,12 +143,13 @@ class Main(CTk):
         finally:
             match login:
                 case 'direct':
-                    speak(f'How are you {self.name}?')
+                    speak(f'How are you {self.name}? How can i help you')
                 case 'signin':
                     speak(f'How have you been {self.name}?')
                 case 'signup':
                     speak(f'Welcome {self.name}, i am Aden.')
         del speak
+        
     def event_listener(self):
         '''
         Listens for commands from user
